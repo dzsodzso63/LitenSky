@@ -23,7 +23,7 @@ export const useCurrentLocation = () => {
       
       if (isCancelled) return;
       const resolvedCity: City = {
-        city: resolvedCityName,
+        name: resolvedCityName,
         latitude,
         longitude,
       };

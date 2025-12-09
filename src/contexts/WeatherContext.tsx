@@ -29,7 +29,7 @@ export const WeatherProvider = ({ children }: { children: ReactNode }) => {
   // Load city and recent cities from localStorage on mount
   const storedCity = getLocalStorageItem<City | null>(localStorageKeys.city, null);
   const storedRecentCities = getLocalStorageItem<City[]>(localStorageKeys.recentCities, []);
-  
+
   // Initialize recent cities
   const initialRecentCities = (() => {
     if (storedRecentCities.length === 0 && storedCity) {
@@ -41,15 +41,15 @@ export const WeatherProvider = ({ children }: { children: ReactNode }) => {
     }
     return storedRecentCities;
   })();
-  
+
   const [city, setCityState] = useState<City | null>(storedCity);
   const [recentCities, setRecentCitiesState] = useState<City[]>(initialRecentCities);
-  
+
   // Custom hooks
   const currentLocationCity = useCurrentLocation();
   const { weatherData, isLoading } = useWeatherData(city);
   const timeOfDay = useTimeOfDay(city);
-  const { data: cityImage, isLoading: isCityImageLoading } = useCityImage(city?.city);
+  const { data: cityImage, isLoading: isCityImageLoading } = useCityImage(city?.name ?? '');
   const recentCitiesWithWeather = useRecentCitiesWeather(recentCities, city, currentLocationCity);
 
   // Set current location as selected city if no city is currently selected
@@ -88,30 +88,30 @@ export const WeatherProvider = ({ children }: { children: ReactNode }) => {
           return prev;
         }
         // Add at start, removing any duplicates
-        return addCityToRecents(prev, currentLocationCity, 'start', null);
+        return addCityToRecents(prev, currentLocationCity);
       });
     }
   }, [currentLocationCity]);
 
   const setCity = (cityData: City) => {
-    if (!cityData.city.trim()) return;
-    
+    if (!cityData.name.trim()) return;
+
     const previousCity = city;
-    
+
     // Remove the new city from recents (selected city shouldn't be in recents)
     setRecentCitiesState((prev) => {
       let updated = prev.filter((c) => !isSameCity(c, cityData));
-      
+
       // If there was a previous city and it's different from the new one, add it to recents
       if (previousCity && !isSameCity(previousCity, cityData)) {
         // Add previous city after current location (removing duplicates)
-        updated = addCityToRecents(updated, previousCity, 'after-current', currentLocationCity);
+        updated = addCityToRecents(updated, previousCity, currentLocationCity);
       }
-      
+
       // Keep only the most recent 20 cities
       return updated.slice(0, MAX_RECENT_CITIES);
     });
-    
+
     setCityState(cityData);
   };
 
@@ -131,7 +131,7 @@ export const WeatherProvider = ({ children }: { children: ReactNode }) => {
     if (currentLocationCity && isSameCity(cityToRemove, currentLocationCity)) {
       return;
     }
-    
+
     setRecentCitiesState((prev) => prev.filter((c) => !isSameCity(c, cityToRemove)));
   };
 

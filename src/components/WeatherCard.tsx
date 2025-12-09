@@ -29,14 +29,14 @@ const WeatherCard = ({ cityWeather, onClick }: WeatherCardProps) => {
     return (
       <div
         className={clsx(
-          'backdrop-blur-md rounded-xl p-6 border cursor-pointer transition-all hover:scale-105',
+          'backdrop-blur-md rounded-xl p-4 border cursor-pointer transition-all hover:scale-105',
           borderClass,
           bgClass
         )}
       >
         <div className={clsx('text-center', textColorClass)}>
-          <p className="text-lg font-semibold mb-2">{city.city}</p>
-          <p className="text-sm opacity-70">Loading...</p>
+          <p className="text-base font-semibold">{city.name}</p>
+          <p className="text-xs opacity-70">Loading...</p>
         </div>
       </div>
     );
@@ -46,14 +46,14 @@ const WeatherCard = ({ cityWeather, onClick }: WeatherCardProps) => {
     return (
       <div
         className={clsx(
-          'backdrop-blur-md rounded-xl p-6 border cursor-pointer transition-all hover:scale-105',
+          'backdrop-blur-md rounded-xl p-4 border cursor-pointer transition-all hover:scale-105',
           borderClass,
           bgClass
         )}
       >
         <div className={clsx('text-center', textColorClass)}>
-          <p className="text-lg font-semibold mb-2">{city.city}</p>
-          <p className="text-sm opacity-70">No weather data</p>
+          <p className="text-base font-semibold">{city.name}</p>
+          <p className="text-xs opacity-70">No weather data</p>
         </div>
       </div>
     );
@@ -71,7 +71,7 @@ const WeatherCard = ({ cityWeather, onClick }: WeatherCardProps) => {
     <div
       onClick={onClick}
       className={clsx(
-        'backdrop-blur-md rounded-xl p-6 border cursor-pointer transition-all hover:scale-105 relative',
+        'backdrop-blur-md rounded-xl p-4 border cursor-pointer transition-all hover:scale-105 relative',
         borderClass,
         bgClass
       )}
@@ -79,38 +79,35 @@ const WeatherCard = ({ cityWeather, onClick }: WeatherCardProps) => {
       {!isCurrent && (
         <button
           onClick={handleRemove}
-          className="absolute top-2 right-2 w-6 h-6 flex items-center justify-center text-gray-700 hover:text-gray-900 text-lg font-bold transition-all z-10 cursor-pointer hover:scale-125"
+          className="absolute top-1 right-1 w-5 h-5 flex items-center justify-center text-gray-700 hover:text-gray-900 text-sm font-bold transition-all z-10 cursor-pointer hover:scale-125"
           aria-label="Remove city"
           title="Remove city"
         >
           ×
         </button>
       )}
-      <div className="flex flex-col items-center gap-3">
-        <div className="flex items-center gap-2">
-          <h3 className={clsx('text-xl font-semibold', textColorClass)}>{city.city}</h3>
-          {isCurrent && (
-            <span className="text-xs px-2 py-0.5 bg-blue-500 text-white rounded-full">
-              Current
-            </span>
-          )}
-        </div>
-        
+      <div className="flex items-center gap-3">
         {weatherCode && (
           <WeatherIcon
             weatherCode={weatherCode}
             timeOfDay={displayTimeOfDay}
-            size={64}
+            size={48}
             className="drop-shadow-lg"
           />
         )}
         
-        <div className={clsx('text-3xl font-bold', textColorClass)}>
-          {temperature}°
-        </div>
-        
-        <div className={clsx('text-sm opacity-80', textColorClass)}>
-          {weatherData.data.values.humidity}% humidity
+        <div className="flex flex-col">
+          <div className="flex items-center gap-2">
+            <h3 className={clsx('text-base font-semibold', textColorClass)}>{city.name}</h3>
+            {isCurrent && (
+              <span className="text-xs px-2 py-0.5 bg-blue-500 text-white rounded-full">
+                Current
+              </span>
+            )}
+          </div>
+          <div className={clsx('text-2xl font-bold', textColorClass)}>
+            {temperature}°
+          </div>
         </div>
       </div>
     </div>

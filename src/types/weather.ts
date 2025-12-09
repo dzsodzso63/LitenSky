@@ -1,7 +1,7 @@
 export type TimeOfDay = 'night' | 'sunrise' | 'day' | 'sunset';
 
 export type City = {
-  city: string;
+  name: string;
   latitude: number;
   longitude: number;
 };

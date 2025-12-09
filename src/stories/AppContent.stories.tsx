@@ -128,7 +128,7 @@ const createMockWeatherData = (
 
 // Helper function to create mock city
 const createMockCity = (cityName: string = 'New York', latitude: number = 40.7128, longitude: number = -74.0060): City => ({
-  city: cityName,
+  name: cityName,
   latitude,
   longitude,
 });

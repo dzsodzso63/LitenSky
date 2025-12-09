@@ -1,76 +1,57 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, type UseQueryResult } from '@tanstack/react-query';
+import { getLocalStorageItemWithExpiry, setLocalStorageItemWithExpiry, localStorageKeys } from '../utils/localStorage';
 
-const fetchWikipediaThumbnail = async (city: string): Promise<string | null> => {
-  try {
-    const url = new URL('https://en.wikipedia.org/w/api.php');
-    url.search = new URLSearchParams({
-      action: 'query',
-      titles: city,
-      prop: 'pageimages',
-      format: 'json',
-      pithumbsize: '1600',
-      origin: '*',
-      redirects: '1',
-    }).toString();
+const FALLBACK_IMAGE = 'https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?auto=format&fit=crop&w=1920&q=80';
+const UNSPLASH_KEY = 'oejAbXL4CoXmO12scPXyBUgT98pcL_r7IpA1U1lX4S4';
+const CACHE_DURATION_MS = 5 * 60 * 60 * 1000; // 5 hours in milliseconds
 
-    const res = await fetch(url.toString());
-    if (!res.ok) return null;
+const fetchCityImage = async (cityName: string, signal: AbortSignal): Promise<string> => {
+  // 1. We enforce "skyline" and "architecture" to filter out people/food
+  // 2. We use /search/photos instead of /random to get the "best" result
+  // 3. per_page=1 ensures we only grab the top result
+  const query = `${cityName} city cityscape`;
 
-    const json: any = await res.json();
-    const pages = json?.query?.pages;
-    if (!pages) return null;
+  const response = await fetch(
+    `https://api.unsplash.com/search/photos?page=1&query=${query}&client_id=${UNSPLASH_KEY}&per_page=1&orientation=landscape&order_by=relevant`,
+    { signal }
+  );
 
-    const page = Object.values(pages)[0] as any;
-    const thumb = page?.thumbnail?.source;
-    return thumb ?? null;
-  } catch {
-    return null;
+  if (!response.ok) {
+    throw new Error(`Unsplash API Error: ${response.statusText}`);
   }
+
+  const data = await response.json();
+
+  const bestImage = data?.results?.[0]?.urls?.regular;
+
+  return bestImage || FALLBACK_IMAGE;
 };
 
-const fetchWikidataImage = async (city: string): Promise<string | null> => {
-  try {
-    const url = new URL('https://www.wikidata.org/w/api.php');
-    url.search = new URLSearchParams({
-      action: 'wbgetentities',
-      sites: 'enwiki',
-      titles: city,
-      props: 'claims',
-      format: 'json',
-      origin: '*',
-      redirects: 'yes',
-    }).toString();
+export const useCityImage = (cityName: string): UseQueryResult<string, Error> => {
+  return useQuery({
+    queryKey: ['city-image', cityName],
+    queryFn: async ({ signal }) => {
+      // Check localStorage first
+      const cacheKey = `${localStorageKeys.cityImage}_${cityName}`;
+      const cachedImage = getLocalStorageItemWithExpiry<string>(cacheKey);
 
-    const res = await fetch(url.toString());
-    if (!res.ok) return null;
+      if (cachedImage) {
+        return cachedImage;
+      }
 
-    const json: any = await res.json();
-    const entities = json?.entities;
-    if (!entities) return null;
+      // Fetch from API if not in cache or expired
+      const imageUrl = await fetchCityImage(cityName, signal);
 
-    const firstEntity = entities[Object.keys(entities)[0]];
-    const p18 = firstEntity?.claims?.P18?.[0]?.mainsnak?.datavalue?.value;
-    if (typeof p18 !== 'string') return null;
+      // Save to localStorage with expiration
+      setLocalStorageItemWithExpiry(cacheKey, imageUrl, CACHE_DURATION_MS);
 
-    return `https://commons.wikimedia.org/wiki/Special:FilePath/${encodeURIComponent(p18)}?width=1600`;
-  } catch {
-    return null;
-  }
-};
-
-export function useCityImage(city?: string | null) {
-  return useQuery<string | null>({
-    queryKey: ['cityImage', city?.trim().toLowerCase()],
-    queryFn: async () => {
-      const name = city?.trim();
-      if (!name) return null;
-
-      const wikipediaThumb = await fetchWikipediaThumbnail(name);
-      if (wikipediaThumb) return wikipediaThumb;
-
-      return await fetchWikidataImage(name);
+      return imageUrl;
     },
-    enabled: Boolean(city && city.trim()),
+    enabled: !!cityName,
     staleTime: Infinity,
+    gcTime: Infinity,
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
+    retry: 1,
   });
-}
+};
