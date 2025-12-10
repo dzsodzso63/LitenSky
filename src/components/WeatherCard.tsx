@@ -2,6 +2,7 @@ import { useWeather } from '../contexts/WeatherContext';
 import { useSettings } from '../contexts/SettingsContext';
 import { convertTemperature } from '../utils/temperature';
 import WeatherIcon from './WeatherIcon';
+import LocalTimeDisplay from './LocalTimeDisplay';
 import clsx from 'clsx';
 import type { CityWeather } from '../types/weather';
 
@@ -18,12 +19,9 @@ const WeatherCard = ({ cityWeather, onClick }: WeatherCardProps) => {
   // Use the card's timeOfDay for styling, but fall back to current timeOfDay for icon if needed
   const displayTimeOfDay = timeOfDay || currentTimeOfDay;
 
-  // Uniform transparent greyish background regardless of time of day
-  const bgClass = 'bg-gray-300/20';
-  
-  // Uniform border and text color regardless of time of day
-  const borderClass = 'border-gray-300/30';
-  const textColorClass = 'text-gray-900';
+  // Background and border using time-based colors
+  const bgClass = 'bg-time-bg/20';
+  const borderClass = 'border-time-text/30';
 
   if (isLoading) {
     return (
@@ -34,7 +32,7 @@ const WeatherCard = ({ cityWeather, onClick }: WeatherCardProps) => {
           bgClass
         )}
       >
-        <div className={clsx('text-center', textColorClass)}>
+        <div className="text-center text-time-text">
           <p className="text-base font-semibold">{city.name}</p>
           <p className="text-xs opacity-70">Loading...</p>
         </div>
@@ -51,7 +49,7 @@ const WeatherCard = ({ cityWeather, onClick }: WeatherCardProps) => {
           bgClass
         )}
       >
-        <div className={clsx('text-center', textColorClass)}>
+        <div className="text-center text-time-text">
           <p className="text-base font-semibold">{city.name}</p>
           <p className="text-xs opacity-70">No weather data</p>
         </div>
@@ -79,7 +77,7 @@ const WeatherCard = ({ cityWeather, onClick }: WeatherCardProps) => {
       {!isCurrent && (
         <button
           onClick={handleRemove}
-          className="absolute top-1 right-1 w-5 h-5 flex items-center justify-center text-gray-700 hover:text-gray-900 text-sm font-bold transition-all z-10 cursor-pointer hover:scale-125"
+          className="absolute top-1 right-1 w-5 h-5 flex items-center justify-center text-time-text hover:text-time-text/80 text-sm font-bold transition-all z-10 cursor-pointer hover:scale-125"
           aria-label="Remove city"
           title="Remove city"
         >
@@ -95,17 +93,18 @@ const WeatherCard = ({ cityWeather, onClick }: WeatherCardProps) => {
             className="drop-shadow-lg"
           />
         )}
-        
+
         <div className="flex flex-col">
-          <div className="flex items-center gap-2">
-            <h3 className={clsx('text-base font-semibold', textColorClass)}>{city.name}</h3>
-            {isCurrent && (
+          <div className="flex gap-2 items-baseline">
+            <h3 className="text-base font-semibold text-time-text">{city.name}</h3>
+            {isCurrent ? (
               <span className="text-xs px-2 py-0.5 bg-blue-500 text-white rounded-full">
                 Current
               </span>
-            )}
+            ) :
+              <LocalTimeDisplay city={city} className="" />}
           </div>
-          <div className={clsx('text-2xl font-bold', textColorClass)}>
+          <div className="text-2xl font-bold text-time-text">
             {temperature}°
           </div>
         </div>

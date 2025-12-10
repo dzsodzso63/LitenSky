@@ -1,6 +1,19 @@
 @import "tailwindcss";
 
+@theme {
+  --color-time-bg: var(--time-bg);
+  --color-time-text: var(--time-text);
+}
+
 @layer base {
+  :root {
+    /* Default values for time-of-day colors (will be overridden by WeatherContext) */
+    --time-bg: #60a5fa;
+    /* day default */
+    --time-text: #111827;
+    /* day default */
+  }
+
   body {
     @apply m-0;
   }

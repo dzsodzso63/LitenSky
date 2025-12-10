@@ -28,15 +28,16 @@ const MockWeatherProvider = ({
   timeOfDay: TimeOfDay;
   city: City | null;
 }) => {
+
   const mockContextValue: WeatherContextType = {
     weatherData,
     timeOfDay,
     city,
     cityImage: null,
     recentCities: [],
-    setCity: () => {},
-    clearRecentCities: () => {},
-    removeCityFromRecents: () => {},
+    setCity: () => { },
+    clearRecentCities: () => { },
+    removeCityFromRecents: () => { },
     isLoading: false,
     isCityImageLoading: false,
   };
@@ -70,7 +71,7 @@ const getWeatherCodeOptions = () => {
 
     const codeStr = fourDigitCode.toString().padStart(4, '0');
     const representativeCode = `${codeStr}0`;
-    
+
     const iconInfo = WEATHER_ICON_MAP[representativeCode];
     if (iconInfo) {
       const weatherName = iconInfo.iconFileName

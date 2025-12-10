@@ -58,8 +58,8 @@ const RainBackdrop = () => {
 
       return Array.from({ length: flakeCount }, (_, idx) => {
         const left = Math.random() * 100;
-        const size = 0.6 + Math.random() * 1.6;
-        const duration = 4 + Math.random() * 4 - normalizedIntensity * 1.5;
+        const size = 0.3 + Math.random() * 1.0;
+        const duration = 4 + Math.random() * 4 - normalizedIntensity * 1.5 / size;
         const delay = -(Math.random() * 6);
         const drift = windPush / 2 + (Math.random() - 0.5) * 25;
         const sway = (Math.random() - 0.5) * 18;
@@ -115,8 +115,8 @@ const RainBackdrop = () => {
           className="absolute block bg-white/80"
           style={{
             left: `${drop.left}%`,
-            width: `${0.05 * drop.size}rem`,
-            height: `${1.7 * drop.size}rem`,
+            width: `${0.03 * drop.size}rem`,
+            height: `${1.2 * drop.size}rem`,
             borderRadius: '9999px',
             opacity: timeOfDay === 'night' ? 0.6 : 0.4,
             filter: 'blur(0.2px)',

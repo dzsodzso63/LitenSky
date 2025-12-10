@@ -7,6 +7,7 @@ import RainBackdrop from './components/RainBackdrop';
 import SelectedCityDetails from './components/SelectedCityDetails';
 import RecentCityList from './components/RecentCityList';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { useTimeOfDayColors } from './hooks/useTimeOfDayColors';
 import clsx from 'clsx';
 
 const queryClient = new QueryClient({
@@ -20,28 +21,20 @@ const queryClient = new QueryClient({
 
 export const AppContent = () => {
   const { timeOfDay, cityImage } = useWeather();
-
-  const gradientClass = ({
-    night: 'from-slate-800 to-slate-900',
-    sunrise: 'from-amber-50 to-orange-50',
-    day: 'from-blue-400 to-blue-300',
-    sunset: 'from-orange-200 to-indigo-300',
-  } as const)[timeOfDay] || 'from-blue-400 to-blue-300';
-
-  const textColorClass = 'text-gray-900';
+  useTimeOfDayColors(timeOfDay);
 
   return (
     <div className={clsx(
-      'min-h-screen bg-white bg-gradient-to-br transition-all duration-1000 flex flex-col relative overflow-hidden',
-      gradientClass
+      'min-h-screen transition-all duration-1000 flex flex-col relative overflow-hidden',
+      'bg-time-bg'
     )}>
       <CityImageBackdrop cityImage={cityImage} />
       <RainBackdrop />
       <div className="relative z-10 flex-1 flex flex-col">
-        <Header textColorClass={textColorClass} />
+        <Header />
 
         {/* Main Content */}
-        <main className="container mx-auto px-6 py-12 z-10 pb-32 flex-1 min-h-[800px]">
+        <main className="container mx-auto px-6 py-2 z-10 pb-12 flex-1 min-h-[800px]">
           <SelectedCityDetails />
           <RecentCityList />
         </main>

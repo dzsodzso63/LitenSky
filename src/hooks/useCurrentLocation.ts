@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { reverseGeocode } from '../utils/weather';
+import { reverseGeocode, getTimezone } from '../utils/weather';
 import type { City } from '../types/weather';
 
 export const useCurrentLocation = () => {
@@ -13,19 +13,22 @@ export const useCurrentLocation = () => {
 
     const setResolvedCity = async (latitude: number, longitude: number, cityName?: string) => {
       if (isCancelled) return;
-      
+
       // If no city name provided, try reverse geocoding with Mapbox
       let resolvedCityName = cityName?.trim();
       if (!resolvedCityName) {
         const reverseGeocodedName = await reverseGeocode(latitude, longitude);
         resolvedCityName = reverseGeocodedName || 'Current City';
       }
-      
+
+      if (isCancelled) return;
+      const timezone = await getTimezone(latitude, longitude);
       if (isCancelled) return;
       const resolvedCity: City = {
         name: resolvedCityName,
         latitude,
         longitude,
+        timezone,
       };
       setCurrentLocationCity(resolvedCity);
     };

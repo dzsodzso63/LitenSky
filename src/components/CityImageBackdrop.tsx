@@ -6,7 +6,7 @@ const CityImageBackdrop = ({ cityImage }: CityImageBackdropProps) => {
   if (!cityImage) return null;
 
   return (
-    <div className="fixed top-0 left-0 right-0 z-0 h-[65vh] h-screen blur-xs opacity-30 overflow-hidden pointer-events-none">
+    <div className="fixed top-0 left-0 right-0 z-0 h-[65vh] h-screen blur-xs opacity-15 overflow-hidden pointer-events-none">
       <div
         className="absolute top-0 left-0 right-0 h-screen"
         style={{

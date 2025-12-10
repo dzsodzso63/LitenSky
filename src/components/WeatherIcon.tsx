@@ -34,8 +34,8 @@ const WeatherIcon = ({ weatherCode, timeOfDay, className = '', size = 64 }: Weat
     <img
       src={`/icons/${iconFilename}`}
       alt="Weather icon"
-      className={className}
-      style={{ width: size, height: size, objectFit: 'contain' }}
+      className={`${className} max-w-full`}
+      style={{ width: size, height: size, maxWidth: '100%', objectFit: 'contain' }}
     />
   );
 };

@@ -32,10 +32,7 @@ const Footer = ({ timeOfDay }: FooterProps) => {
 
   return (
     <footer
-      className={clsx(
-        'fixed bottom-0 left-0 right-0 py-2 px-6 backdrop-blur-sm z-20',
-        timeOfDay === 'night' ? 'bg-white/30' : 'bg-white/60'
-      )}
+      className={'py-2 px-6 bg-time-bg/50 backdrop-blur-sm'}
     >
       <div className="relative flex items-center justify-between gap-2 flex-wrap">
         <div className="flex items-center gap-2">
@@ -93,7 +90,7 @@ const Footer = ({ timeOfDay }: FooterProps) => {
               </p>
               <p className="mt-2">
                 <a
-                  href="/storybook"
+                  href="/storybook/"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="underline hover:text-gray-900"

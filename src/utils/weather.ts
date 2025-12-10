@@ -1,4 +1,5 @@
 import { getTimes } from 'suncalc';
+import { find as findTimezone } from 'browser-geo-tz';
 import { MAPBOX_ACCESS_TOKEN, MAPBOX_REVERSE_GEOCODE_BASE_URL } from '../constants/mapbox';
 import { getLocalStorageItem, setLocalStorageItem, localStorageKeys } from './localStorage';
 import type { City, RecentCity, WeatherData, TimeOfDay } from '../types/weather';
@@ -60,6 +61,20 @@ export const setCachedWeather = (latitude: number, longitude: number, data: Weat
     setLocalStorageItem(localStorageKeys.weatherCache, cache);
   } catch (error) {
     console.warn('Failed to cache weather data:', error);
+  }
+};
+
+// Get timezone from coordinates using browser-geo-tz
+export const getTimezone = async (latitude: number, longitude: number): Promise<string | undefined> => {
+  try {
+    const timezone = await findTimezone(latitude, longitude);
+    // browser-geo-tz returns a string or array, take the first one if it's an array
+    if (Array.isArray(timezone)) {
+      return timezone.length > 0 ? timezone[0] : undefined;
+    }
+    return typeof timezone === 'string' ? timezone : undefined;
+  } catch {
+    return undefined;
   }
 };
 
