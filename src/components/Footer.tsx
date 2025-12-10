@@ -1,12 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
-import clsx from 'clsx';
 import SettingsButton from './SettingsButton';
 
-type FooterProps = {
-  timeOfDay?: string | null;
-};
-
-const Footer = ({ timeOfDay }: FooterProps) => {
+const Footer = () => {
   const [isInfoOpen, setIsInfoOpen] = useState(false);
   const infoButtonRef = useRef<HTMLButtonElement | null>(null);
   const infoPanelRef = useRef<HTMLDivElement | null>(null);

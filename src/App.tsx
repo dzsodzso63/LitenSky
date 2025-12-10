@@ -39,7 +39,7 @@ export const AppContent = () => {
           <RecentCityList />
         </main>
 
-        <Footer timeOfDay={timeOfDay} />
+        <Footer />
       </div>
     </div>
   );
