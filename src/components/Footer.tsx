@@ -91,6 +91,16 @@ const Footer = ({ timeOfDay }: FooterProps) => {
                   github.com/dzsodzso63/LitenSky
                 </a>
               </p>
+              <p className="mt-2">
+                <a
+                  href="/storybook"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="underline hover:text-gray-900"
+                >
+                  View Storybook
+                </a>
+              </p>
             </div>
           )}
         </div>
