@@ -1,4 +1,4 @@
-export const TOMORROW_API_KEY = 'sNeEQXuOkuOpmAhDoS8yYAds9etgpaLj';
+export const TOMORROW_API_KEY = import.meta.env.VITE_TOMORROW_API_KEY || '';
 
 export const TOMORROW_API_BASE_URL = 'https://api.tomorrow.io/v4/weather/realtime';
 

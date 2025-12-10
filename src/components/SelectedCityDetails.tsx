@@ -13,9 +13,9 @@ const getWeatherText = (weatherCode: number, timeOfDay: TimeOfDay): string => {
     timeOfDay === 'night'
       ? WEATHER_ICON_MAP[`${codeStr}1`] || WEATHER_ICON_MAP[`${codeStr}0`]
       : WEATHER_ICON_MAP[`${codeStr}0`];
-  
+
   if (!iconInfo?.iconFileName) return '';
-  
+
   // Extract description from filename: {code}_{description}_large@2x.png
   const filename = iconInfo.iconFileName;
   const match = filename.match(/^\d+_(.+?)_large@2x\.png$/);
@@ -45,13 +45,25 @@ const SelectedCityDetails = () => {
     );
   }
 
+  const { values } = weatherData.data;
+  const feelsLikeTemperature = convertTemperature(values.temperatureApparent, unit);
+  const precipitationProbability = Math.round(values.precipitationProbability);
+  const windSpeed = unit === 'imperial' ? Math.round(values.windSpeed * 2.23694) : Math.round(values.windSpeed);
+  const windSpeedUnit = unit === 'imperial' ? 'mph' : 'm/s';
+  const pressure =
+    unit === 'imperial'
+      ? Math.round(values.pressureSeaLevel * 0.02953 * 100) / 100 // convert hPa to inHg
+      : Math.round(values.pressureSeaLevel);
+  const pressureUnit = unit === 'imperial' ? 'inHg' : 'hPa';
+  const windDirectionRotation = values.windDirection + 180; // rotate arrow to indicate origin (pointing from source)
+
   return (
     <div className="mb-10 pb-12">
       <div className="flex flex-col lg:flex-row items-center justify-center gap-6">
         <div className="flex items-center gap-4">
-          {weatherData.data.values.weatherCode && (
+          {values.weatherCode && (
             <WeatherIcon
-              weatherCode={weatherData.data.values.weatherCode}
+              weatherCode={values.weatherCode}
               timeOfDay={timeOfDay}
               size={180}
               className="drop-shadow-lg"
@@ -60,7 +72,7 @@ const SelectedCityDetails = () => {
           <div className="flex flex-col">
             <h2 className="text-2xl font-semibold">{city.name}</h2>
             <div className="text-8xl font-bold leading-none">
-              {convertTemperature(weatherData.data.values.temperature, unit)}°
+              {convertTemperature(values.temperature, unit)}°
             </div>
           </div>
         </div>
@@ -72,24 +84,38 @@ const SelectedCityDetails = () => {
             textColorClass
           )}
         >
-          {weatherData.data.values.weatherCode && (
+          {values.weatherCode && (
             <div className="text-base font-semibold mb-1">
-              {getWeatherText(weatherData.data.values.weatherCode, timeOfDay)}
+              {getWeatherText(values.weatherCode, timeOfDay)}
             </div>
           )}
           <div className="flex items-center justify-between">
+            <span className="text-sm opacity-80">Feels Like</span>
+            <span className="text-lg font-semibold">{feelsLikeTemperature}°</span>
+          </div>
+          <div className="flex items-center justify-between">
             <span className="text-sm opacity-80">Humidity</span>
-            <span className="text-lg font-semibold">{weatherData.data.values.humidity}%</span>
+            <span className="text-lg font-semibold">{values.humidity}%</span>
+          </div>
+          <div className="flex items-center justify-between">
+            <span className="text-sm opacity-80">Precipitation</span>
+            <span className="text-lg font-semibold">{precipitationProbability}%</span>
+          </div>
+          <div className="flex items-center justify-between">
+            <span className="text-sm opacity-80">Pressure</span>
+            <span className="text-lg font-semibold">
+              {pressure} {pressureUnit}
+            </span>
           </div>
           <div className="flex items-center justify-between">
             <span className="text-sm opacity-80">Wind</span>
             <div className="flex items-center gap-2">
               <span className="text-lg font-semibold">
-                {Math.round(weatherData.data.values.windSpeed)} m/s
+                {windSpeed} {windSpeedUnit}
               </span>
               <span
                 className="inline-flex items-center justify-center w-7 h-7 rounded-full border border-current text-sm"
-                style={{ transform: `rotate(${weatherData.data.values.windDirection}deg)` }}
+                style={{ transform: `rotate(${windDirectionRotation}deg)` }}
                 aria-label="Wind direction"
               >
                 ↑

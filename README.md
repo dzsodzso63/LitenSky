@@ -1,73 +1,41 @@
-# React + TypeScript + Vite
+# LitenSky
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A lightweight weather experience built with React + TypeScript + Vite. Search for cities, see real‑time conditions, and enjoy contextual backdrops that match the current atmosphere.
 
-Currently, two official plugins are available:
+## What this app does
+- Autocomplete and search for cities, then show the current conditions and key details.
+- Save and revisit recent cities with quick access.
+- Display dynamic gradients and optional rain effects based on weather and time of day.
+- Render city-specific hero images to set the mood.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Services used
+- Weather data: [Tomorrow.io](https://www.tomorrow.io) realtime API.
+- City imagery: [Unsplash](https://unsplash.com/developers) search API for backdrop photos.
+- City search/autocomplete: [Mapbox](https://www.mapbox.com/) geocoding.
 
-## React Compiler
-
-The React Compiler is currently not compatible with SWC. See [this issue](https://github.com/vitejs/vite-plugin-react/issues/428) for tracking the progress.
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## Getting started
+```bash
+npm install
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### Environment variables
+Create a `.env` file at the project root (values below are placeholders):
 ```
+VITE_MAPBOX_ACCESS_TOKEN=your_mapbox_token
+VITE_TOMORROW_API_KEY=your_tomorrow_api_key
+VITE_UNSPLASH_ACCESS_KEY=your_unsplash_access_key
+```
+
+## Commands
+- Run dev server: `npm run dev`
+- Build: `npm run build`
+- Test: `npx vitest` (or `npx vitest --ui` for the UI runner)
+- Storybook: `npm run storybook`
+
+## Project links
+- Live app: https://liten-sky.vercel.app
+- Source: https://github.com/dzsodzso63/LitenSky
+
+## License
+This project is open-sourced under the MIT License. See the `LICENSE` file for details.

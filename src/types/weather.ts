@@ -6,6 +6,10 @@ export type City = {
   longitude: number;
 };
 
+export type RecentCity = City & {
+  cityImage?: string | null;
+};
+
 export type WeatherValues = {
   altimeterSetting: number;
   cloudBase: number;
@@ -44,6 +48,7 @@ export type WeatherData = {
 
 export type CityWeather = {
   city: City;
+  cityImage: string | null;
   weatherData: WeatherData | null;
   timeOfDay: TimeOfDay;
   isLoading: boolean;

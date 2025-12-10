@@ -1,7 +1,7 @@
 import { getTimes } from 'suncalc';
 import { MAPBOX_ACCESS_TOKEN, MAPBOX_REVERSE_GEOCODE_BASE_URL } from '../constants/mapbox';
 import { getLocalStorageItem, setLocalStorageItem, localStorageKeys } from './localStorage';
-import type { City, WeatherData, TimeOfDay } from '../types/weather';
+import type { City, RecentCity, WeatherData, TimeOfDay } from '../types/weather';
 
 // Weather cache structure
 type WeatherCacheEntry = {
@@ -117,12 +117,13 @@ export const isSameCity = (city1: City, city2: City): boolean => {
 
 // Helper to add a city to recents, removing any duplicates first
 export const addCityToRecents = (
-  cities: City[],
-  cityToAdd: City,
-  currentLocationCity: City | null = null
-): City[] => {
-
-  const withoutCity = cities.filter((c) => !isSameCity(c, cityToAdd) && (!currentLocationCity || !isSameCity(c, currentLocationCity)));
+  cities: RecentCity[],
+  cityToAdd: RecentCity,
+  currentLocationCity: RecentCity | null = null
+): RecentCity[] => {
+  const withoutCity = cities.filter(
+    (c) => !isSameCity(c, cityToAdd) && (!currentLocationCity || !isSameCity(c, currentLocationCity))
+  );
 
   if (currentLocationCity && !isSameCity(cityToAdd, currentLocationCity)) {
     return [currentLocationCity, cityToAdd, ...withoutCity];

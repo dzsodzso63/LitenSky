@@ -2,8 +2,6 @@ export type WeatherIconInfo = {
   iconFileName: string;
   cloudIntensity: number;
   isThunder: boolean;
-  isRain: boolean;
-  isSnow: boolean;
 };
 
 const BASE_ICON_FILENAMES: Record<string, string> = {
@@ -173,13 +171,7 @@ const deriveCloudIntensity = (fileName: string): number => {
   return 0.6;
 };
 
-const deriveIsRain = (fileName: string): boolean =>
-  /rain|drizzle|freezing_rain/i.test(fileName);
-
 const deriveIsThunder = (fileName: string): boolean => /tstorm/i.test(fileName);
-
-const deriveIsSnow = (fileName: string): boolean =>
-  /snow|flurries|wintry_mix|ice_pellets/i.test(fileName);
 
 export const WEATHER_ICON_MAP: Record<string, WeatherIconInfo> = Object.fromEntries(
   Object.entries(BASE_ICON_FILENAMES).map(([code, iconFileName]) => [
@@ -188,8 +180,6 @@ export const WEATHER_ICON_MAP: Record<string, WeatherIconInfo> = Object.fromEntr
       iconFileName,
       cloudIntensity: deriveCloudIntensity(iconFileName),
       isThunder: deriveIsThunder(iconFileName),
-      isRain: deriveIsRain(iconFileName),
-      isSnow: deriveIsSnow(iconFileName),
     },
   ])
 );
