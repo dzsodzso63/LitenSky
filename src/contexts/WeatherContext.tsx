@@ -17,7 +17,6 @@ export type WeatherContextType = {
   cityImage: string | null;
   recentCities: CityWeather[];
   setCity: (city: City) => void;
-  clearRecentCities: () => void;
   removeCityFromRecents: (city: City) => void;
   isLoading: boolean;
   isCityImageLoading: boolean;
@@ -129,17 +128,6 @@ export const WeatherProvider = ({ children }: { children: ReactNode }) => {
     setCityState(cityData);
   };
 
-  const clearRecentCities = () => {
-    // Keep only the current location city
-    if (currentLocationCity) {
-      setRecentCitiesState([currentLocationCity]);
-      // Set it as the selected city
-      setCityState(currentLocationCity);
-    } else {
-      setRecentCitiesState([]);
-    }
-  };
-
   const removeCityFromRecents = (cityToRemove: City) => {
     // Don't allow removing the current location city
     if (currentLocationCity && isSameCity(cityToRemove, currentLocationCity)) {
@@ -158,7 +146,6 @@ export const WeatherProvider = ({ children }: { children: ReactNode }) => {
         cityImage: cityImage ?? null,
         recentCities: recentCitiesWithWeather,
         setCity,
-        clearRecentCities,
         removeCityFromRecents,
         isLoading,
         isCityImageLoading,

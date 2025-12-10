@@ -36,7 +36,6 @@ const MockWeatherProvider = ({
     cityImage: null,
     recentCities: [],
     setCity: () => { },
-    clearRecentCities: () => { },
     removeCityFromRecents: () => { },
     isLoading: false,
     isCityImageLoading: false,
