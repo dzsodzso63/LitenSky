@@ -16,10 +16,8 @@ const WeatherCard = ({ cityWeather, onClick }: WeatherCardProps) => {
   const { unit } = useSettings();
   const { city, weatherData, timeOfDay, isLoading, isCurrent } = cityWeather;
 
-  // Use the card's timeOfDay for styling, but fall back to current timeOfDay for icon if needed
   const displayTimeOfDay = timeOfDay || currentTimeOfDay;
 
-  // Background and border using time-based colors
   const bgClass = 'bg-time-bg/20';
   const borderClass = 'border-time-text/30';
 
@@ -69,7 +67,7 @@ const WeatherCard = ({ cityWeather, onClick }: WeatherCardProps) => {
     <div
       onClick={onClick}
       className={clsx(
-        'backdrop-blur-md rounded-xl p-4 border cursor-pointer transition-all hover:scale-105 relative',
+        'backdrop-blur-md rounded-xl p-4 pr-6 border cursor-pointer transition-all hover:scale-105 relative',
         borderClass,
         bgClass
       )}
@@ -84,27 +82,27 @@ const WeatherCard = ({ cityWeather, onClick }: WeatherCardProps) => {
           ×
         </button>
       )}
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-4">
         {weatherCode && (
           <WeatherIcon
             weatherCode={weatherCode}
             timeOfDay={displayTimeOfDay}
-            size={48}
+            size={72}
             className="drop-shadow-lg"
           />
         )}
 
-        <div className="flex flex-col">
-          <div className="flex gap-2 items-baseline">
-            <h3 className="text-base font-semibold text-time-text">{city.name}</h3>
+        <div className="flex flex-col justify-between min-h-[72px]">
+          <div className="flex gap-3 items-baseline">
+            <h3 className="text-lg text-time-text max-w-[140px] truncate">{city.name}</h3>
             {isCurrent ? (
               <span className="text-xs px-2 py-0.5 bg-blue-500 text-white rounded-full">
                 Current
               </span>
             ) :
-              <LocalTimeDisplay city={city} className="" />}
+              <LocalTimeDisplay city={city} className="text-nowrap whitespace-nowrap" />}
           </div>
-          <div className="text-2xl font-bold text-time-text">
+          <div className="text-3xl font-bold text-time-text text-nowrap whitespace-nowrap">
             {temperature}°
           </div>
         </div>

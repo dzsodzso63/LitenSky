@@ -17,11 +17,9 @@ const getWeatherText = (weatherCode: number, timeOfDay: TimeOfDay): string => {
 
   if (!iconInfo?.iconFileName) return '';
 
-  // Extract description from filename: {code}_{description}_large@2x.png
   const filename = iconInfo.iconFileName;
-  const match = filename.match(/^\d+_(.+?)_large@2x\.png$/);
+  const match = filename.match(/^\d+_(.+?)_large\.svg$/);
   if (match) {
-    // Replace underscores with spaces and capitalize words
     return match[1]
       .split('_')
       .map(word => word.charAt(0).toUpperCase() + word.slice(1))
@@ -85,7 +83,7 @@ const SelectedCityDetails = () => {
             </div>
           )}
           <div className="flex flex-col items-center">
-            <div className="flex items-center gap-2">
+            <div className="flex items-baseline gap-2">
               <h2 className="text-xl font-semibold text-time-text">{city.name}</h2>
               <LocalTimeDisplay city={city} className="" />
             </div>
@@ -95,9 +93,9 @@ const SelectedCityDetails = () => {
           </div>
         </div>
 
-        <div className="p-4 flex flex-col gap-1 min-w-[380px] text-time-text">
+        <div className="p-4 flex flex-col gap-1 min-w-[380px] text-time-text text-base">
           {values.weatherCode && (
-            <div className="text-base font-semibold mb-1">
+            <div className="font-semibold mb-1">
               {getWeatherText(values.weatherCode, timeOfDay)}
             </div>
           )}
@@ -105,31 +103,31 @@ const SelectedCityDetails = () => {
           <hr className="border-time-text opacity-20 my-2 w-full" />
 
           <div className="flex items-center justify-between">
-            <span className="text-sm opacity-80">Feels Like</span>
-            <span className="text-lg font-semibold">{feelsLikeTemperature}°</span>
+            <span className="opacity-80">Feels Like</span>
+            <span className="font-semibold">{feelsLikeTemperature}°</span>
           </div>
           <div className="flex items-center justify-between">
-            <span className="text-sm opacity-80">Humidity</span>
-            <span className="text-lg font-semibold">{values.humidity}%</span>
+            <span className="opacity-80">Humidity</span>
+            <span className="font-semibold">{values.humidity}%</span>
           </div>
           <div className="flex items-center justify-between">
-            <span className="text-sm opacity-80">Precipitation</span>
-            <span className="text-lg font-semibold">{precipitationProbability}%</span>
+            <span className="topacity-80">Precipitation</span>
+            <span className="font-semibold">{precipitationProbability}%</span>
           </div>
           <div className="flex items-center justify-between">
-            <span className="text-sm opacity-80">Pressure</span>
-            <span className="text-lg font-semibold">
+            <span className="opacity-80">Pressure</span>
+            <span className="font-semibold">
               {pressure} {pressureUnit}
             </span>
           </div>
           <div className="flex items-center justify-between">
-            <span className="text-sm opacity-80">Wind</span>
+            <span className="opacity-80">Wind</span>
             <div className="flex items-center gap-2">
-              <span className="text-lg font-semibold">
+              <span className="font-semibold">
                 {windSpeed} {windSpeedUnit}
               </span>
               <span
-                className="inline-flex items-center justify-center w-7 h-7 rounded-full border border-current text-sm"
+                className="inline-flex items-center justify-center w-7 h-7 text-lg"
                 style={{ transform: `rotate(${windDirectionRotation}deg)` }}
                 aria-label="Wind direction"
               >

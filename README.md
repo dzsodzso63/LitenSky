@@ -30,8 +30,15 @@ VITE_UNSPLASH_ACCESS_KEY=your_unsplash_access_key
 ## Commands
 - Run dev server: `npm run dev`
 - Build: `npm run build`
-- Test: `npx vitest` (or `npx vitest --ui` for the UI runner)
+- Unit tests (jsdom-less utilities): `npm test -- --project unit`
+- Component/story tests in Storybook (Chromium, headless): `npm test -- --project storybook`
+- Vitest UI runner (all projects): `npm run test:ui`
 - Storybook: `npm run storybook`
+
+## Testing notes
+- Unit tests cover core utilities like temperature conversion and weather cache helpers.
+- Component/story tests run through Storybook with `@storybook/addon-vitest` in a headless Chromium instance to validate stories end-to-end.
+- Default `npm test` runs both projects; add `--project unit` or `--project storybook` to focus.
 
 ## Project links
 - Live app: https://liten-sky.vercel.app

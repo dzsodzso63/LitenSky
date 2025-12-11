@@ -8,10 +8,6 @@ interface WeatherIconProps {
   size?: number;
 }
 
-/**
- * Component that displays a weather icon based on weather code
- * Uses a mapping to find the correct icon filename
- */
 const WeatherIcon = ({ weatherCode, timeOfDay, className = '', size = 64 }: WeatherIconProps) => {
 
   if (weatherCode === undefined || weatherCode === null) {

@@ -3,6 +3,7 @@ import { SettingsProvider } from './contexts/SettingsContext';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import CityImageBackdrop from './components/CityImageBackdrop';
+import CloudBackdrop from './components/CloudBackdrop';
 import RainBackdrop from './components/RainBackdrop';
 import SelectedCityDetails from './components/SelectedCityDetails';
 import RecentCityList from './components/RecentCityList';
@@ -29,6 +30,7 @@ export const AppContent = () => {
       'bg-time-bg'
     )}>
       <CityImageBackdrop cityImage={cityImage} />
+      <CloudBackdrop />
       <RainBackdrop />
       <div className="relative z-10 flex-1 flex flex-col">
         <Header />

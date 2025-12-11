@@ -2,9 +2,9 @@ import { useQuery, type UseQueryResult } from '@tanstack/react-query';
 import { getLocalStorageItem, localStorageKeys, setLocalStorageItem } from '../utils/localStorage';
 import { isSameCity } from '../utils/weather';
 import type { City, RecentCity } from '../types/weather';
+import { UNSPLASH_ACCESS_KEY } from '../constants/unsplash';
 
 const FALLBACK_IMAGE = 'https://images.unsplash.com/photo-1464082354059-27db6ce50048?auto=format&fit=crop&w=1920&q=80';
-import { UNSPLASH_ACCESS_KEY } from '../constants/apiKeys';
 
 const fetchCityImage = async (cityName: string, signal: AbortSignal): Promise<string> => {
   const query = `${cityName} city cityscape`;

@@ -46,7 +46,7 @@ export const useLocalTime = (city: City | null): LocalTimeResult => {
         );
 
         let diff = cityHour - userHour;
-        // Handle day boundary (e.g., city 23:00 vs user 01:00 = -22, not +2)
+        // Day boundary
         if (diff > 12) diff -= 24;
         if (diff < -12) diff += 24;
         setOffset(diff);
@@ -56,10 +56,8 @@ export const useLocalTime = (city: City | null): LocalTimeResult => {
       }
     };
 
-    // Update immediately
     updateTime();
 
-    // Update every second
     const interval = setInterval(updateTime, 1000);
 
     return () => clearInterval(interval);

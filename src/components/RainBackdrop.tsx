@@ -24,15 +24,14 @@ type SnowFlake = {
 const RainBackdrop = () => {
   const { weatherData, timeOfDay } = useWeather();
 
-  const rainIntensity = weatherData?.data.values.rainIntensity ?? 0;
-  const snowIntensity = weatherData?.data.values.snowIntensity ?? 0;
+  const rainIntensity = (weatherData?.data.values.rainIntensity ?? 0) + (weatherData?.data.values.sleetIntensity ?? 0);
+  const snowIntensity = (weatherData?.data.values.snowIntensity ?? 0) + (weatherData?.data.values.sleetIntensity ?? 0);
   const windSpeed = weatherData?.data.values.windSpeed ?? 0;
 
   const { drops, flakes } = useMemo(() => {
-    // Wind pushes precipitation diagonally; clamp to keep it subtle.
+
     const windPush = Math.max(-120, Math.min(120, windSpeed * 10));
 
-    // Rain
     const drops: RainDrop[] = (() => {
       if (rainIntensity <= 0.05) return [];
       const normalizedIntensity = Math.min(1, rainIntensity / 5);
@@ -43,14 +42,13 @@ const RainBackdrop = () => {
         const size = 0.5 + Math.random() * 1.4;
         const duration = Math.max(1.6, 3.6 - normalizedIntensity * 1.5 - Math.random());
         const delay = -(Math.random() * 5);
-        const drift = windPush + (Math.random() - 0.5) * 80;
+        const drift = windPush * 3 + (Math.random() - 0.5) * 80;
         const tilt = -Math.max(-18, Math.min(18, drift / 8));
 
         return { id: idx, left, size, duration, delay, drift, tilt };
       });
     })();
 
-    // Snow
     const flakes: SnowFlake[] = (() => {
       if (snowIntensity <= 0.05) return [];
       const normalizedIntensity = Math.min(1, snowIntensity / 3);
@@ -59,9 +57,9 @@ const RainBackdrop = () => {
       return Array.from({ length: flakeCount }, (_, idx) => {
         const left = Math.random() * 100;
         const size = 0.3 + Math.random() * 1.0;
-        const duration = 4 + Math.random() * 4 - normalizedIntensity * 1.5 / size;
+        const duration = 4 + Math.random() * 4 - normalizedIntensity * 1.2 / size;
         const delay = -(Math.random() * 6);
-        const drift = windPush / 2 + (Math.random() - 0.5) * 25;
+        const drift = windPush * 2.5 + (Math.random() - 0.5) * 25;
         const sway = (Math.random() - 0.5) * 18;
 
         return { id: idx, left, size, duration: Math.max(3, duration), delay, drift, sway };
@@ -75,7 +73,7 @@ const RainBackdrop = () => {
 
   return (
     <div
-      className="pointer-events-none fixed inset-0 z-0 overflow-hidden blur-xs opacity-70"
+      className="pointer-events-none fixed inset-0 z-0 overflow-hidden blur-xs opacity-80"
       aria-hidden="true"
     >
       <style>
@@ -112,13 +110,13 @@ const RainBackdrop = () => {
       {drops.map((drop) => (
         <span
           key={`rain-${drop.id}`}
-          className="absolute block bg-white/80"
+          className="absolute block bg-time-text/60"
           style={{
             left: `${drop.left}%`,
             width: `${0.03 * drop.size}rem`,
             height: `${1.2 * drop.size}rem`,
             borderRadius: '9999px',
-            opacity: timeOfDay === 'night' ? 0.6 : 0.4,
+            opacity: timeOfDay === 'night' ? 0.4 : 0.4,
             filter: 'blur(0.2px)',
             animation: `rain-fall ${drop.duration}s linear infinite`,
             animationDelay: `${drop.delay}s`,
@@ -134,11 +132,11 @@ const RainBackdrop = () => {
           className="absolute block bg-white"
           style={{
             left: `${flake.left}%`,
-            width: `${0.1 * flake.size}rem`,
-            height: `${0.1 * flake.size}rem`,
+            width: `${0.2 * flake.size}rem`,
+            height: `${0.2 * flake.size}rem`,
             borderRadius: '9999px',
-            boxShadow: `0 0 8px rgba(255,255,255,0.8)`,
-            opacity: timeOfDay === 'night' ? 0.75 : 0.6,
+            boxShadow: `0 0 8px rgba(255,255,255,0.9)`,
+            opacity: timeOfDay === 'night' ? 0.85 : 0.99,
             filter: 'blur(0.3px)',
             animation: `snow-fall ${flake.duration}s linear infinite`,
             animationDelay: `${flake.delay}s`,

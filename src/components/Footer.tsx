@@ -6,13 +6,13 @@ const Footer = () => {
   const faviconSrc = timeOfDay === 'night' ? '/favicon_night.svg' : '/favicon.svg';
   return (
     <footer
-      className="py-2 px-6 bg-time-bg/50 backdrop-blur-sm text-time-text"
+      className="py-4 px-6 bg-time-bg/30 backdrop-blur-sm text-time-text/80"
     >
-      <div className="flex items-center lg:gap-12 lg:flex-row gap-2 flex-col">
+      <div className="flex items-center lg:gap-6 lg:flex-row gap-2 flex-col text-base">
         <p className="flex items-center gap-2 font-semibold">
           <img
             src={faviconSrc}
-            alt="LitenSky"
+            alt="LitenSky logo"
             className="w-6 h-6 md:w-8 md:h-8"
           />LitenSky</p>
         <p className="mt-1">
@@ -21,7 +21,7 @@ const Footer = () => {
             href="https://www.tomorrow.io"
             target="_blank"
             rel="noopener noreferrer"
-            className="underline hover:text-gray-900"
+            className="underline hover:text-time-text"
           >
             Tomorrow.io
           </a>
@@ -32,7 +32,7 @@ const Footer = () => {
             href="https://github.com/dzsodzso63"
             target="_blank"
             rel="noopener noreferrer"
-            className="underline hover:text-gray-900"
+            className="underline hover:text-time-text"
           >
             Dzso
           </a>
@@ -42,7 +42,7 @@ const Footer = () => {
             href="https://github.com/dzsodzso63/LitenSky"
             target="_blank"
             rel="noopener noreferrer"
-            className="underline hover:text-gray-900"
+            className="underline hover:text-time-text"
           >
             Source code
           </a>
@@ -52,7 +52,7 @@ const Footer = () => {
             href="/storybook/"
             target="_blank"
             rel="noopener noreferrer"
-            className="underline hover:text-gray-900"
+            className="underline hover:text-time-text"
           >
             View Storybook
           </a>

@@ -7,7 +7,7 @@ import type { City, WeatherData } from '../types/weather';
 export const useWeatherData = (city: City | null) => {
   const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
 
-  // Load cached weather data on mount if we have a city
+  // Load cached weather data
   useEffect(() => {
     if (city) {
       const cachedData = getCachedWeather(city.latitude, city.longitude);
@@ -15,10 +15,9 @@ export const useWeatherData = (city: City | null) => {
         setWeatherData(cachedData);
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []); // Only run on mount
+  }, []);
 
-  // React Query to fetch weather data when city changes
+  // fetch weather data
   const { data: fetchedWeatherData, isLoading } = useQuery({
     queryKey: ['weather', city?.latitude, city?.longitude],
     queryFn: async (): Promise<WeatherData> => {
@@ -32,27 +31,24 @@ export const useWeatherData = (city: City | null) => {
         return cachedData;
       }
 
-      // Fetch from API if not in cache or cache expired
       const location = `${city.latitude}%2C%20${city.longitude}`;
       const url = `${TOMORROW_API_BASE_URL}?units=metric&location=${location}&apikey=${TOMORROW_API_KEY}`;
-      
+
       const response = await fetch(url, TOMORROW_API_OPTIONS);
       if (!response.ok) {
         throw new Error('Failed to fetch weather data');
       }
-      
+
       const data: WeatherData = await response.json();
-      
-      // Cache the fetched data
+
       setCachedWeather(city.latitude, city.longitude, data);
-      
+
       return data;
     },
     enabled: city !== null,
     staleTime: CACHE_DURATION,
   });
 
-  // Update weatherData when fetched data changes
   useEffect(() => {
     if (fetchedWeatherData) {
       setWeatherData(fetchedWeatherData);

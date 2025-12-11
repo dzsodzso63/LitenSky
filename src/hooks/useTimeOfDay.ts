@@ -10,7 +10,6 @@ export const useTimeOfDay = (city: City | null): TimeOfDay => {
       return;
     }
 
-    // Calculate immediately
     const updateTimeOfDay = () => {
       const newTimeOfDay = calculateTimeOfDay(city.latitude, city.longitude);
       setTimeOfDay(newTimeOfDay);
@@ -18,7 +17,6 @@ export const useTimeOfDay = (city: City | null): TimeOfDay => {
 
     updateTimeOfDay();
 
-    // Update every minute to keep timeOfDay current
     const interval = setInterval(updateTimeOfDay, 60 * 1000);
 
     return () => clearInterval(interval);

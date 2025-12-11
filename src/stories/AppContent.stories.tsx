@@ -74,7 +74,7 @@ const getWeatherCodeOptions = () => {
     const iconInfo = WEATHER_ICON_MAP[representativeCode];
     if (iconInfo) {
       const weatherName = iconInfo.iconFileName
-        .replace('_large@2x.png', '')
+        .replace('_large.svg', '')
         .replace(/_/g, ' ')
         .replace(/\b\w/g, (l) => l.toUpperCase());
       // Store the 4-digit code as the value

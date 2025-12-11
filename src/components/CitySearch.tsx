@@ -4,6 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import debounce from 'lodash.debounce';
 import { MAPBOX_ACCESS_TOKEN, MAPBOX_API_BASE_URL, MAPBOX_SEARCH_LIMIT, MAPBOX_SEARCH_TYPES } from '../constants/mapbox';
 import { getTimezone } from '../utils/weather';
+import clsx from 'clsx';
 
 type MapboxFeature = {
   type: string;
@@ -111,7 +112,6 @@ const CitySearch = () => {
         break;
       case 'Enter':
         e.preventDefault();
-        // If no specific index selected, use first result (index 0)
         const indexToSelect = selectedIndex >= 0 ? selectedIndex : 0;
         if (indexToSelect < results.length) {
           handleSelectCity(results[indexToSelect]);
@@ -140,7 +140,6 @@ const CitySearch = () => {
   };
 
   const handleInputBlur = () => {
-    // Delay to allow click events on results to fire first
     setTimeout(() => {
       if (!resultsRef.current?.contains(document.activeElement)) {
         setShowResults(false);
@@ -164,7 +163,10 @@ const CitySearch = () => {
             onFocus={handleInputFocus}
             onBlur={handleInputBlur}
             placeholder="Search city..."
-            className="py-2 px-4 w-48 md:w-64 rounded-lg border border-time-text/30 bg-time-bg/50 text-time-text placeholder-time-text/80 focus:outline-none focus:ring-2 focus:ring-time-text/50 focus:border-transparent transition-all duration-200"
+            className={clsx(
+              "py-2 px-4 w-48 md:w-64 rounded-lg border border-time-text/30 bg-time-bg/50 text-time-text placeholder-time-text/80",
+              "focus:outline-none focus:ring-2 focus:ring-time-text/50 focus:border-transparent transition-all duration-200 hover:scale-102"
+            )}
           />
 
           {showResults && (results.length > 0 || isSearching) && (

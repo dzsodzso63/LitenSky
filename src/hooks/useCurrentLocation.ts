@@ -6,7 +6,7 @@ export const useCurrentLocation = () => {
   const [currentLocationCity, setCurrentLocationCity] = useState<City | null>(null);
 
   useEffect(() => {
-    // Only resolve once if we don't already have a current location city
+
     if (currentLocationCity) return;
 
     let isCancelled = false;
@@ -14,7 +14,7 @@ export const useCurrentLocation = () => {
     const setResolvedCity = async (latitude: number, longitude: number, cityName?: string) => {
       if (isCancelled) return;
 
-      // If no city name provided, try reverse geocoding with Mapbox
+      // Reverse geocoding with Mapbox (no city name when using Browsers location api (gps))
       let resolvedCityName = cityName?.trim();
       if (!resolvedCityName) {
         const reverseGeocodedName = await reverseGeocode(latitude, longitude);
