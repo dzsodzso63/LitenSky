@@ -2,8 +2,11 @@ import type { Meta, StoryObj } from '@storybook/react';
 import WeatherCard from '../components/WeatherCard';
 import { MockWeatherProvider, SettingsUnitProvider, createMockCityWeather } from './storyHelpers';
 import type { TimeOfDay } from '../types/weather';
+import type { CityWeather } from '../types/weather';
 
 type StoryArgs = {
+  cityWeather: CityWeather;
+  onClick?: () => void;
   unit: 'metric' | 'imperial';
   timeOfDay: TimeOfDay;
   cityName: string;
@@ -56,6 +59,13 @@ type Story = StoryObj<StoryArgs>;
 
 export const Default: Story = {
   args: {
+    cityWeather: createMockCityWeather({
+      city: { name: 'New York', latitude: 40.7128, longitude: -74.006, timezone: 'America/New_York' },
+      timeOfDay: 'day',
+      isLoading: false,
+      isCurrent: false,
+      weatherOverrides: { temperature: 23, weatherCode: 1000 },
+    }),
     unit: 'metric',
     timeOfDay: 'day',
     cityName: 'New York',
@@ -65,7 +75,7 @@ export const Default: Story = {
     isLoading: false,
     isCurrent: false,
   },
-  render: ({ unit, timeOfDay, cityName, timezone, temperature, weatherCode, isLoading, isCurrent }) => {
+  render: ({ unit, timeOfDay, cityName, timezone, temperature, weatherCode, isLoading, isCurrent, onClick }) => {
     const log = (name: string) => (...args: unknown[]) => {
       // eslint-disable-next-line no-console
       console.log(name, ...args);
@@ -86,7 +96,7 @@ export const Default: Story = {
           removeCityFromRecents={log('removeCityFromRecents')}
         >
           <div className="p-6 bg-time-bg/30 rounded-2xl border border-time-text/30 w-[360px]">
-            <WeatherCard cityWeather={cityWeather} onClick={log('cardClick')} />
+            <WeatherCard cityWeather={cityWeather} onClick={onClick ?? log('cardClick')} />
           </div>
         </MockWeatherProvider>
       </SettingsUnitProvider>
